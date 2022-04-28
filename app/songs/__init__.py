@@ -44,6 +44,8 @@ def songs_upload():
                 list_of_songs.append(Song(row['Name'],row['Artist'],row['Year'],row['Genre']))
 
         current_user.songs = list_of_songs
+        log.info("Uploaded CSV successfully")
+        log.info(filename)
         db.session.commit()
 
         return redirect(url_for('songs.songs_browse'))
