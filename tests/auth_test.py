@@ -15,3 +15,10 @@ def test_auth_pages(client):
     assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
+
+
+def test_login(client):
+    """Test that a user cannot login without registering first"""
+    with client:
+        res = client.post('/login', data=dict(email="test@gmail.com", password='test'))
+        assert res.status_code == 400
