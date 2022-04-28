@@ -15,3 +15,12 @@ def test_auth_pages(client):
     assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
+
+def test_setup(client):
+    driver.get("https://www.facebook.com")
+    driver.find_element(By.NAME,"email").send_keys("XXXX@gmail.com")
+    driver.find_element(By.NAME,"pass").send_keys("XXX@ABC")
+    driver.find_element(By.NAME,"login").click()
+    driver.close()
+    assert True
+
