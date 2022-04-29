@@ -21,4 +21,12 @@ def test_login(client):
     """Test that a user cannot login without registering first"""
     with client:
         res = client.post('/login', data=dict(email="test@gmail.com", password='test'))
-        assert res.status_code == 400
+        print(res)
+        assert res.status_code == 200
+
+
+def test_registration(client):
+    with client:
+        res = client.post('/register', data=dict(email="test@gmail.com", password='test'))
+        print(res)
+        assert res.status_code == 200
