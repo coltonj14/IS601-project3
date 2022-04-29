@@ -33,6 +33,8 @@ def test_login(application, client):
         assert b"Welcome" in res.data
 
         #Test that the user can navigate to the dashboard and that it displays the user
+        dres = client.get("/dashboard", follow_redirects=True)
+        assert b"cj236" in dres.data
 
         db.session.delete(user)
 
@@ -47,4 +49,16 @@ def test_registration(client):
         assert b'href="/login"' in res.data
 
 
+
+def test_dashboard_access(client):
+    """Test dashboard access"""
+    res = client.get("/dashboard")
+    assert res.status_code == 302
+
+
+
+def test_authenticated_user(client):
+    """Test user authentication"""
+    user = User("cj236@njit.edu", "testtest")
+    assert user.is_authenticated() == True
 
