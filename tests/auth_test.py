@@ -54,3 +54,11 @@ def test_dashboard_access(client):
     """Test dashboard access"""
     res = client.get("/dashboard")
     assert res.status_code == 302
+
+
+
+def test_authenticated_user(client):
+    """Test user authentication"""
+    user = User("cj236@njit.edu", "testtest")
+    assert user.is_authenticated() == True
+
