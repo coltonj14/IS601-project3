@@ -4,7 +4,7 @@ from app import db
 from app.db.models import User, Song
 from faker import Faker
 
-def test_adding_user(application):
+def test_adding_user(application, client):
     log = logging.getLogger("myApp")
     with application.app_context():
         assert db.session.query(User).count() == 0
@@ -14,6 +14,11 @@ def test_adding_user(application):
         user = User('cj236@njit.edu', 'testtest')
         #add it to get ready to be committed
         db.session.add(user)
+
+        resp = client.post('/login', data=dict(email="cj236@njit.edu", password='testtest'), follow_redirects=True)
+        assert resp.status_code == 200
+        assert b"Welcome" in resp.data
+
         #call the commit
         #db.session.commit()
         #assert that we now have a new user

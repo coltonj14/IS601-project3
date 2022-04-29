@@ -1,4 +1,6 @@
 """This test the homepage"""
+from app import db
+from app.db.models import User, Song
 
 def test_request_main_menu_links(client):
     """This makes the index page"""
@@ -15,6 +17,34 @@ def test_auth_pages(client):
     assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
+
+    
+    
+def test_login(application, client):
+    """Test that a user login functionality works"""
+    with application.app_context():
+        #Add user to be able to test login
+        user = User('cj236@njit.edu', 'testtest')
+        db.session.add(user)
+        db.session.commit()
+
+        res = client.post('/login', data=dict(email="cj236@njit.edu", password='testtest'), follow_redirects=True)
+        assert res.status_code == 200
+        assert b"Welcome" in res.data
+
+        #Test that the user can navigate to the dashboard and that it displays the user
+
+        db.session.delete(user)
+
+
+
+def test_registration(client):
+    """Test if a user logs in that it redirects to login page"""
+    with client:
+        res = client.post('/register', data=dict(email="test@gmail.com", password='test'), follow_redirects=True)
+        print(res.data)
+        assert res.status_code == 200
+        assert b'href="/login"' in res.data
 
 
 
